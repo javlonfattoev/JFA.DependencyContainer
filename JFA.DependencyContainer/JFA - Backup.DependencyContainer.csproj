@@ -13,7 +13,6 @@
     <RepositoryUrl>https://github.com/javlonfattoev/JFA.DependencyContainer</RepositoryUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>JFA.png</PackageIcon>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>

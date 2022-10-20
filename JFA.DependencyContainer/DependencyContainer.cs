@@ -17,5 +17,5 @@ public class DependencyContainer
         _dependencies.FirstOrDefault(x => x.Type.Name == type.Name);
 
     private void AddDependency<T>(Lifetime lifetime) =>
-        _dependencies.Add(new Dependency(typeof(T), lifetime));
+        _dependencies.Add(Dependency.Create(typeof(T), lifetime));
 }
