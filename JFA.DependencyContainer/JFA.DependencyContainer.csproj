@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Version>1.0.0</Version>
+    <Authors>Javlon Fattoev</Authors>
+    <Company>JFA</Company>
+    <Description>Dependency container</Description>
+    <PackageTags>container, dependency, dependency injection, di</PackageTags>
+  </PropertyGroup>
+
+</Project>
