@@ -1,21 +1,25 @@
 ﻿namespace JFA.DependencyContainer;
 
-public class DependencyContainer
+public class DependencyContainer : DependencyCollection
 {
-    private readonly List<Dependency> _dependencies;
-
-    public DependencyContainer() =>
-        _dependencies = new List<Dependency>();
-
-    public void AddSingleton<T>() =>
+    public void AddSingleton<T>() where T : class =>
         AddDependency<T>(Lifetime.Singleton);
+    
+    public void AddScoped<T>() where T : class =>
+        AddDependency<T>(Lifetime.Scoped);
 
-    public void AddTransient<T>() =>
+    public void AddTransient<T>() where T : class =>
         AddDependency<T>(Lifetime.Transient);
 
-    internal Dependency? GetDependency(Type type) =>
-        _dependencies.FirstOrDefault(x => x.Type.Name == type.Name);
+    public void AddSingleton<TInterface, TImplementation>() 
+        where TImplementation : class, TInterface =>
+        AddDependency<TInterface, TImplementation>(Lifetime.Singleton);
 
-    private void AddDependency<T>(Lifetime lifetime) =>
-        _dependencies.Add(Dependency.Create(typeof(T), lifetime));
+    public void AddScoped<TInterface, TImplementation>() 
+        where TImplementation : class, TInterface =>
+        AddDependency<TInterface, TImplementation>(Lifetime.Singleton);
+
+    public void AddTransient<TInterface, TImplementation>() 
+        where TImplementation : class, TInterface =>
+        AddDependency<TInterface, TImplementation>(Lifetime.Singleton);
 }

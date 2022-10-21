@@ -2,12 +2,12 @@
 
 public class UsersRepository
 {
-    private readonly AppDbContext _context;
-
     public UsersRepository(AppDbContext context)
     {
-        _context = context;
+        AppDbContext = context;
     }
 
-    public string GetUsers => nameof(UsersRepository) + ":" + _context.Users;
+    public AppDbContext AppDbContext { get; }
+
+    public string GetUsers() => nameof(UsersRepository) + ":" + AppDbContext.Users;
 }

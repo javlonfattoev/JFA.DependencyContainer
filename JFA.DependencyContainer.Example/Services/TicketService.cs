@@ -9,5 +9,6 @@ public class TicketService
         _ticketRepository = context;
     }
 
-    public string GetTickets => nameof(TicketService) + ":" + _ticketRepository.GetTickets;
+    public AppDbContext AppDbContext => _ticketRepository.AppDbContext;
+    public string GetTickets() => nameof(TicketService) + ":" + _ticketRepository.GetTickets();
 }

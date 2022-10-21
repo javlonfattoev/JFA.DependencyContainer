@@ -10,20 +10,32 @@ public class DependencyResolver
 
     private object GetService(Type type, Type? dependencyType = null)
     {
+        DependencyCollection? dependencyCollection = default;
+        if (dependencyType == null) dependencyCollection = new DependencyCollection();
+
         var dependency = Services.GetDependency(type);
         if (dependency is null)
-            throw new InvalidOperationException(
-                $"Unable to resolve service for type '{type}' while attempting to activate '{dependencyType}'.");
-        
-        var parameters = dependency.Type.GetConstructors().Single().GetParameters();
+            throw new UnableToResolveException(type, dependencyType);
 
-        if (parameters.Length <= 0) return CreateImplementation(dependency, Activator.CreateInstance);
+        if (dependencyType != null && dependency.Lifetime == Lifetime.Scoped)
+        {
+            var scopedDependency = dependencyCollection?.GetDependency(dependency.Type);
+            if (scopedDependency is { IsImplemented: true })
+                return scopedDependency.Implementation!;
+
+            dependencyCollection?.AddDependency(dependency);
+        }
+
+        var parameters = (dependency.ImplementationType ?? dependency.Type).GetConstructors().Single().GetParameters();
+
+        if (parameters.Length <= 0)
+            return CreateImplementation(dependency, Activator.CreateInstance, dependencyType);
 
         var parameterImplementations = new object?[parameters.Length];
 
         for (var i = 0; i < parameters.Length; i++)
             parameterImplementations[i] = GetService(parameters[i].ParameterType, dependency.Type);
-
+        
         return CreateImplementation(dependency, t => Activator.CreateInstance(t, parameterImplementations), dependencyType);
     }
 
@@ -36,14 +48,14 @@ public class DependencyResolver
 
         try
         {
-            implementation = factory(dependency.Type);
+            implementation = factory(dependency.ImplementationType ?? dependency.Type);
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            throw new InvalidOperationException($"Unable to resolve service for type '{dependency.Type}' while attempting to activate '{dependencyType}'.", e);
+            throw new UnableToResolveException(dependency.Type, dependencyType);
         }
 
-        if (dependency.Lifetime == Lifetime.Singleton)
+        if ((dependencyType != null && dependency.Lifetime == Lifetime.Scoped) || dependency.Lifetime == Lifetime.Singleton)
             dependency.AddImplementation(implementation);
 
         return implementation!;
