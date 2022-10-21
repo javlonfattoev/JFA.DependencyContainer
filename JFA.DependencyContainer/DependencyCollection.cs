@@ -13,9 +13,9 @@ public class DependencyCollection
     internal Dependency? GetDependency(Type type) =>
         _dependencies.FirstOrDefault(x => x.Type.Name == type.Name);
 
-    protected void AddDependency<T>(Lifetime lifetime) =>
-        _dependencies.Add(Dependency.Create(typeof(T), lifetime));
+    protected void AddDependency(Type type, Lifetime lifetime) =>
+        _dependencies.Add(Dependency.Create(type, lifetime));
 
-    protected void AddDependency<TInterface, TImplementation>(Lifetime lifetime) =>
-        _dependencies.Add(Dependency.Create(typeof(TInterface), typeof(TImplementation), lifetime));
+    protected void AddDependency(Type @interface, Type implementation, Lifetime lifetime) =>
+        _dependencies.Add(Dependency.Create(@interface, implementation, lifetime));
 }
