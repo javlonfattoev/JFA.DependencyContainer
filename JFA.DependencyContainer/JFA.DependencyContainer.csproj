@@ -24,10 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="JFA.DependencyInjection" Version="1.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="JFA.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
