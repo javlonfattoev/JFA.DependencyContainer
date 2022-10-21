@@ -22,8 +22,49 @@ public class DependencyContainerTests
         var resolver = new DependencyResolver();
         resolver.Services.AddSingleton<AppDbContext>();
 
+        resolver.Services.AddTransient<TicketRepository>();
+        resolver.Services.AddTransient<TicketService>();
+
+        var ticketRepository = resolver.GetService<TicketRepository>();
+        var ticketService = resolver.GetService<TicketService>();
+
         var context1 = resolver.GetService<AppDbContext>();
         var context2 = resolver.GetService<AppDbContext>();
+
         Assert.True(string.Equals(context1.Users, context2.Users));
+        Assert.True(string.Equals(context1.Tickets, ticketRepository.AppDbContext.Tickets));
+        Assert.True(string.Equals(ticketRepository.AppDbContext.Tickets, ticketService.AppDbContext.Tickets));
+    }
+
+    [Fact]
+    public void DependencyContainer_ScopedShouldReturnSameValuePerInstance()
+    {
+        var resolver = new DependencyResolver();
+        resolver.Services.AddScoped<AppDbContext>();
+        resolver.Services.AddTransient<TicketRepository>();
+        resolver.Services.AddTransient<TicketService>();
+        resolver.Services.AddTransient<UsersRepository>();
+        resolver.Services.AddTransient<IUsersService, UsersService>();
+
+        var usersService = resolver.GetService<IUsersService>();
+
+        // A scoped service in the process of retrieving a single object should return the same result
+        Assert.True(string.Equals(usersService.RepositoryTickets, usersService.ServiceTickets));
+    }
+
+    [Fact]
+    public void DependencyContainer_TransientShouldNotReturnSameValuePerInstance()
+    {
+        var resolver = new DependencyResolver();
+        resolver.Services.AddTransient<AppDbContext>();
+        resolver.Services.AddTransient<TicketRepository>();
+        resolver.Services.AddTransient<TicketService>();
+        resolver.Services.AddTransient<UsersRepository>();
+        resolver.Services.AddTransient<IUsersService, UsersService>();
+
+        var usersService = resolver.GetService<IUsersService>();
+
+        // A scoped service in the process of retrieving a single object should return the same result
+        Assert.True(!string.Equals(usersService.RepositoryTickets, usersService.ServiceTickets));
     }
 }

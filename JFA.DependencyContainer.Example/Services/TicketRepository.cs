@@ -2,12 +2,12 @@
 
 public class TicketRepository
 {
-    private readonly AppDbContext _context;
-
     public TicketRepository(AppDbContext context)
     {
-        _context = context;
+        AppDbContext = context;
     }
 
-    public string GetTickets => nameof(TicketRepository) + ":" + _context.Tickets;
+    public AppDbContext AppDbContext { get; }
+
+    public string GetTickets() => nameof(TicketRepository) + ":" + AppDbContext.Tickets;
 }
