@@ -17,6 +17,11 @@ resolver.Services.AddScoped<TicketService>();
 var ticketService = resolver.GetService<TicketService>();
 ```
 #
+>register services [with attributes](https://www.nuget.org/packages/JFA.DependencyInjection)
+```C#
+builder.Services.AddServicesFromAttribute();
+```
+#
 > with interface
 ```C#
 resolver.Services.AddSingleton<IUsersService, UsersService>();
