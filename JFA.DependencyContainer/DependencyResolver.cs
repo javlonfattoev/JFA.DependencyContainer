@@ -8,9 +8,9 @@ public class DependencyResolver
 
     public T GetService<T>() => (T)GetService(typeof(T));
 
-    public object GetService(Type type) => GetService(type);
+    public object GetService(Type type) => GetService(type, null);
 
-    private object GetService(Type type, Type? dependencyType = null)
+    private object GetService(Type type, Type? dependencyType)
     {
         DependencyCollection? dependencyCollection = default;
         if (dependencyType == null) dependencyCollection = new DependencyCollection();
