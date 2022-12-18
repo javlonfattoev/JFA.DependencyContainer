@@ -8,9 +8,8 @@ public class DependencyResolver
 
     public T GetService<T>() => (T)GetService(typeof(T));
 
-    private object GetService(Type type, Type? dependencyType = null)
+    private object GetService(Type type, Type? dependencyType = null, DependencyCollection? dependencyCollection)
     {
-        DependencyCollection? dependencyCollection = default;
         if (dependencyType == null) dependencyCollection = new DependencyCollection();
 
         var dependency = Services.GetDependency(type);
@@ -34,7 +33,7 @@ public class DependencyResolver
         var parameterImplementations = new object?[parameters.Length];
 
         for (var i = 0; i < parameters.Length; i++)
-            parameterImplementations[i] = GetService(parameters[i].ParameterType, dependency.Type);
+            parameterImplementations[i] = GetService(parameters[i].ParameterType, dependency.Type, dependencyCollection);
         
         return CreateImplementation(dependency, t => Activator.CreateInstance(t, parameterImplementations), dependencyType);
     }
