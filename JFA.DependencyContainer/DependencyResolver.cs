@@ -10,7 +10,7 @@ public class DependencyResolver
 
     private object GetService(Type type, Type? dependencyType = null, DependencyCollection? dependencyCollection)
     {
-        if (dependencyType == null) dependencyCollection = new DependencyCollection();
+        dependencyCollection ??= new DependencyCollection();
 
         var dependency = Services.GetDependency(type);
         if (dependency is null)
