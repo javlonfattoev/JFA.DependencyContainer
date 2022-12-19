@@ -3,9 +3,11 @@
 public class TicketService
 {
     private readonly TicketRepository _ticketRepository;
+    private readonly AppDbContext _appDbContext;
 
-    public TicketService(TicketRepository context)
+    public TicketService(TicketRepository context, AppDbContext appDbContext)
     {
+         _appDbContext = appDbContext;
         _ticketRepository = context;
     }
 
