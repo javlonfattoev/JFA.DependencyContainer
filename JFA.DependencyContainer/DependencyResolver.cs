@@ -8,6 +8,8 @@ public class DependencyResolver
 
     public T GetService<T>() => (T)GetService(typeof(T));
 
+    public object GetService(Type type) => GetService(type);
+
     private object GetService(Type type, Type? dependencyType = null, DependencyCollection? dependencyCollection = null)
     {
         dependencyCollection ??= new DependencyCollection();
