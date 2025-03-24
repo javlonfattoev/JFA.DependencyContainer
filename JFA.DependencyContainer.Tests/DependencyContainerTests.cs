@@ -31,9 +31,9 @@ public class DependencyContainerTests
         var context1 = resolver.GetService<AppDbContext>();
         var context2 = resolver.GetService<AppDbContext>();
 
-        Assert.True(string.Equals(context1.Users, context2.Users));
-        Assert.True(string.Equals(context1.Tickets, ticketRepository.AppDbContext.Tickets));
-        Assert.True(string.Equals(ticketRepository.AppDbContext.Tickets, ticketService.AppDbContext.Tickets));
+        Assert.Equal(context1.Users, context2.Users);
+        Assert.Equal(context1.Tickets, ticketRepository.AppDbContext.Tickets);
+        Assert.Equal(ticketRepository.AppDbContext.Tickets, ticketService.AppDbContext.Tickets);
     }
 
     [Fact]
@@ -49,7 +49,7 @@ public class DependencyContainerTests
         var usersService = resolver.GetService<IUsersService>();
 
         // A scoped service in the process of retrieving a single object should return the same result
-        Assert.True(string.Equals(usersService.RepositoryTickets, usersService.ServiceTickets));
+        Assert.Equal(usersService.RepositoryTickets, usersService.ServiceTickets);
     }
 
     [Fact]
@@ -65,6 +65,6 @@ public class DependencyContainerTests
         var usersService = resolver.GetService<IUsersService>();
 
         // A scoped service in the process of retrieving a single object should return the same result
-        Assert.True(!string.Equals(usersService.RepositoryTickets, usersService.ServiceTickets));
+        Assert.NotEqual(usersService.RepositoryTickets, usersService.ServiceTickets);
     }
 }
